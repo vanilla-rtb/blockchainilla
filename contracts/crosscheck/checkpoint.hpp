@@ -6,15 +6,13 @@
 namespace blockchainilla {
 
     struct checkpoint {
+        //time begin  since epoch, use lower_bound = t1 and upper_bound = t2 to retrieve recrods
+        uint64_t time_begin{};
         account_name partner{};
-        uint64_t CPM{};
-        uint64_t CPC{};
-        uint64_t CPA{};
-        uint64_t amount{};
-        checksum256 user_uuid{}; //hash256 of a user uuid from ssp
-        uint64_t check_period{}; //timelaps to trigger metrics checks
+        uint64_t views{};
+        eosio::asset amount{};
 
-        EOSLIB_SERIALIZE(checkpoint, (partner)(CPM)(CPC)(CPA)(amount)(user_uuid))
+        EOSLIB_SERIALIZE(checkpoint, (time_begin)(partner)(views)(amount))
     };
 
 }
