@@ -15,15 +15,12 @@ namespace blockchainilla {
    class crosscheck : public contract  {
 
    public:
-         crosscheck( account_name owner): contract{owner},
-                                          partnerstate{_self,_self},
-                                          partners{_self,_self}
+         crosscheck( account_name owner): contract{owner}
          {}
 
          void addcheckp   (const checkpoint);
-         void updatecheckp(const checkpoint);
          void removecheckp(const checkpoint);
-         void validate    (uint64_t time_from , uint64_t time_to);
+         void validate    (account_name partner, uint64_t time_from , uint64_t time_to);
          void disengage   (account_name partner);
 
    private:
@@ -40,8 +37,7 @@ namespace blockchainilla {
             PartnerStatus state{PartnerStatus::Undefined};
         };
 
-        eosio::singleton<N(partnerstate), partner_state> partnerstate;
-        partner_table_t partners;
+        using partner_state_t = eosio::singleton<N(partnerstate), partner_state>;
    };
 
 }
