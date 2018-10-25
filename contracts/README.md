@@ -7,7 +7,7 @@ cleos create account eosio dspcrosschek EOS6yA2bVer75LLhPA6XMKRVDUsfojfh8pvhAcAi
 eosiocpp -o contracts/crosscheck/crosscheck.wast contracts/crosscheck/crosscheck.cpp
 eosiocpp -g contracts/crosscheck/crosscheck.abi contracts/crosscheck/crosscheck.cpp
 cleos set contract sspcrosschek contracts/crosscheck -p sspcrosschek@active
-cleos set contract dspcrosschek contracts/crosscheck -p sspcrosschek@active
+cleos set contract dspcrosschek contracts/crosscheck -p dspcrosschek@active
 ```
 
 This contracts is utilizing a view to each other , so ssp can look at dsp stats and visa versa those are not 

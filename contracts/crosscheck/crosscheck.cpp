@@ -1,6 +1,13 @@
 #include "crosscheck.hpp"
 #include <numeric>
 
+namespace eosio {
+    //missing implementation in <eosiolib/time.hpp>
+    time_point::operator std::string() const {
+        return std::to_string(elapsed.count());
+    }
+}
+
 namespace blockchainilla {
    using namespace eosio;
 
@@ -82,12 +89,14 @@ namespace blockchainilla {
         if ( !ps.partner ) {
             ps.partner = partner;
             ps = PartnerStatus::Active;
+            partnerstate.set(ps, _self);
         } else {
             eosio_assert( ps.partner == partner,
                           (std::string("partner [")+name{partner}.to_string()+"] does not belong to partnerstate").c_str() );
             eosio_assert(ps.state != PartnerStatus::Active,
                          (std::string("partner is already Active {") + std::to_string((int) ps.state) + "}").c_str());
             ps = PartnerStatus::Active;
+            partnerstate.set(ps, _self);
         }
     }
 
