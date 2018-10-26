@@ -1,5 +1,5 @@
 # crosscheck-contract
-nodeos -e -p eosio --max-transaction-time 50 --plugin eosio::chain_api_plugin --plugin eosio::history_api_plugin &> /tmp/nodeos.out &
+nodeos -e -p eosio --plugin eosio::chain_api_plugin --plugin eosio::history_api_plugin &> /tmp/nodeos.out &
 
 ```bash
 cleos create account eosio sspcrosschek EOS6yA2bVer75LLhPA6XMKRVDUsfojfh8pvhAcAiK959nRgG9WFTq
