@@ -82,7 +82,7 @@ cleos get table sspcrosschek dspcrosschek  partnertable
 }
 ```
 
-### DSP to validate against SSP stats will trigger disengage action that will put SSP partner OnHold as decrepency exceeds 10% (TODO: configurable) 
+### DSP to validate against SSP stats will trigger disengage action that will put SSP partner OnHold as decrepency exceeds 10% (TODO: configurable) - DSP can also use this contract state and stop bidding on the impressions until descepency resolved.
 
 ```cleos push action dspcrosschek validate '["sspcrosschek", "2018-10-26T04:00:00.000" , "2018-10-26T05:00:00.000"]' -p dspcrosschek
 
