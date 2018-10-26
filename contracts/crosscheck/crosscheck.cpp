@@ -17,7 +17,7 @@ namespace blockchainilla {
         ///https://stackoverflow.com/questions/15957805/extract-year-month-day-etc-from-stdchronotime-point-in-c
         require_auth(_self);
         partner_table_t partnerviews{_self,check.partner};
-        auto hours = time_point(microseconds(check.time_begin.time_since_epoch().to_seconds()/3600));
+        auto hours = eosio::time_point(eosio::hours(check.time_begin.time_since_epoch().to_seconds()/3600));
         partner_state_t partnerstate{_self, check.partner};
         eosio_assert( partnerstate.get_or_default().partner == check.partner, "check.partnerviews is not in partnerstate");
         eosio_assert( partnerstate.get_or_default().timestamp <= check.time_begin, "check.time_begin preceeds partnerstate.timestamp");
@@ -40,7 +40,7 @@ namespace blockchainilla {
     void crosscheck::removecheckp(const checkpoint check) {
         require_auth(_self);
         partner_table_t partnerviews{_self,check.partner};
-        auto hours = time_point(microseconds(check.time_begin.time_since_epoch().to_seconds()/3600));
+        auto hours = eosio::time_point(eosio::hours(check.time_begin.time_since_epoch().to_seconds()/3600));
         auto itr = partnerviews.find(hours.elapsed.count()) ; //hours since epoch
         eosio_assert( itr != partnerviews.end(), (std::string("time slot does not exist [")+std::string(check.time_begin)+"]").c_str() );
         partnerviews.erase(itr);

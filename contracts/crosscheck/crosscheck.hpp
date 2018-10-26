@@ -29,7 +29,7 @@ namespace blockchainilla {
 
 
    private:
-        ///@abi table partners i64
+        ///@abi table partnertable i64
         struct partner {
             checkpoint  check;
             uint64_t primary_key() const { return check.time_begin.elapsed.count(); }
