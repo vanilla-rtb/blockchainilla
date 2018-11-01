@@ -17,7 +17,7 @@ namespace blockchainilla {
         ///https://stackoverflow.com/questions/15957805/extract-year-month-day-etc-from-stdchronotime-point-in-c
         require_auth(_self);
         partner_table_t partnerviews{_self,check.partner};
-        auto hours = eosio::time_point(eosio::hours(check.time_begin.time_since_epoch().to_seconds()/3600));
+        auto && hours = eosio::time_point(eosio::hours(check.time_begin.time_since_epoch().to_seconds()/3600));
         partner_state_t partnerstate{_self, check.partner};
         eosio_assert( partnerstate.get_or_default().partner == check.partner, "check.partnerviews is not in partnerstate");
         eosio_assert( partnerstate.get_or_default().timestamp <= check.time_begin, "check.time_begin preceeds partnerstate.timestamp");
@@ -40,7 +40,7 @@ namespace blockchainilla {
     void crosscheck::removecheckp(const checkpoint check) {
         require_auth(_self);
         partner_table_t partnerviews{_self,check.partner};
-        auto hours = eosio::time_point(eosio::hours(check.time_begin.time_since_epoch().to_seconds()/3600));
+        auto && hours = eosio::time_point(eosio::hours(check.time_begin.time_since_epoch().to_seconds()/3600));
         auto itr = partnerviews.find(hours.elapsed.count()) ; //hours since epoch
         eosio_assert( itr != partnerviews.end(), (std::string("time slot does not exist [")+std::string(check.time_begin)+"]").c_str() );
         partnerviews.erase(itr);
@@ -50,7 +50,7 @@ namespace blockchainilla {
     void crosscheck::validate(account_name partner, eosio::time_point time_from , eosio::time_point time_to) {
         require_auth(_self);
         partner_state_t partnerstate{_self, partner};
-        auto ps = partnerstate.get_or_default();
+        auto && ps = partnerstate.get_or_default();
 
         eosio_assert( ps.partner == partner, (std::string("partner [")+name{partner}.to_string()+"] is not valid for this conrtact").c_str() );
         eosio_assert( ps.state == PartnerStatus::Active, (std::string("partner [")+name{partner}.to_string()+"] is not Active").c_str() );
@@ -76,7 +76,7 @@ namespace blockchainilla {
     void crosscheck::disengage(account_name partner)  {
         require_auth(_self);
         partner_state_t partnerstate{_self, partner};
-        auto ps = validate_get_partner(partnerstate,partner);
+        auto && ps = validate_get_partner(partnerstate,partner);
         ps = PartnerStatus::OnHold;
         partnerstate.set(ps,_self);
     }
@@ -85,7 +85,7 @@ namespace blockchainilla {
     void crosscheck::engage(account_name partner)  {
         require_auth(_self);
         partner_state_t partnerstate{_self, partner};
-        auto ps = partnerstate.get_or_default();
+        auto && ps = partnerstate.get_or_default();
         if ( !ps.partner ) {
             ps.partner = partner;
             ps = PartnerStatus::Active;
@@ -104,7 +104,7 @@ namespace blockchainilla {
     void crosscheck::dispute(account_name partner)  {
         require_auth(_self);
         partner_state_t partnerstate{_self, partner};
-        auto ps = validate_get_partner(partnerstate,partner);
+        auto && ps = validate_get_partner(partnerstate,partner);
         ps = PartnerStatus::Disputed;
         partnerstate.set(ps,_self);
     }
@@ -114,14 +114,14 @@ namespace blockchainilla {
         require_auth(_self);
 
         partner_state_t partnerstate{_self, partner};
-        auto ps = partnerstate.get_or_default();
+        auto && ps = partnerstate.get_or_default();
         eosio_assert( ps.partner == partner,
                       (std::string("partner [")+name{partner}.to_string()+"] is not valid for this partnerstate").c_str() );
 
         partnerstate.remove();
 
         partner_table_t partnerviews{_self,partner};
-        for ( auto & view : partnerviews ) {
+        for ( auto && view : partnerviews ) {
             partnerviews.erase(view);
         }
     }
